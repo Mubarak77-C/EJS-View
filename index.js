@@ -95,6 +95,54 @@ app.post("/messages/:id/delete", async (req, res) => {
   }
 });
 
+// 1. GET Route: Load the edit form for a specific message ID
+app.get("/messages/:id/edit", async (req, res) => {
+  const messageId = parseInt(req.params.id, 10);
+
+  if (isNaN(messageId)) {
+    return res.status(400).send("Invalid ID format.");
+  }
+
+  try {
+    const { rows } = await pool.query("SELECT * FROM messages WHERE id = $1", [
+      messageId,
+    ]);
+
+    if (rows.length === 0) {
+      return res.status(404).send("404: Message not found.");
+    }
+
+    res.render("edit", {
+      title: "Edit Message",
+      message: rows[0],
+    });
+  } catch (err) {
+    console.error("Database fetch error for editing:", err);
+    res.status(500).send("Database error.");
+  }
+});
+
+// 2. POST Route: Execute SQL UPDATE on the database
+app.post("/messages/:id/update", async (req, res) => {
+  const messageId = parseInt(req.params.id, 10);
+  const { messageText } = req.body;
+
+  if (isNaN(messageId)) {
+    return res.status(400).send("Invalid ID format.");
+  }
+
+  try {
+    await pool.query("UPDATE messages SET text = $1 WHERE id = $2", [
+      messageText,
+      messageId,
+    ]);
+    res.redirect("/");
+  } catch (err) {
+    console.error("DATABASE UPDATE FAILED:", err);
+    res.status(500).send("Failed to update message: " + err.message);
+  }
+});
+
 // Server Listener
 const PORT = 3000;
 app.listen(PORT, () => {

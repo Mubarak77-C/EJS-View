@@ -21,6 +21,9 @@
             
             <a href="/messages/<%= msg.id %>" style="color: #38bdf8;">Open Message Detail</a>
             
+            <!-- NEW: Edit Link -->
+            <a href="/messages/<%= msg.id %>/edit" style="color: #fbbf24;">Edit</a>
+            
             <!-- Delete Form -->
             <form action="/messages/<%= msg.id %>/delete" method="POST" style="display:inline; margin-left: 10px;">
                 <button type="submit" style="background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">Delete</button>

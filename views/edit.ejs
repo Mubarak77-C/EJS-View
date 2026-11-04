@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title><%= title %></title>
+  </head>
+  <body
+    style="
+      font-family: sans-serif;
+      padding: 2rem;
+      background: #0f172a;
+      color: #f8fafc;
+    "
+  >
+    <h1>Edit Message</h1>
+
+    <!-- Action points to the update route with the message id -->
+    <form action="/messages/<%= message.id %>/update" method="POST">
+      <div>
+        <label>Author:</label><br />
+        <!-- Username can be viewed or locked; let's keep it displayed -->
+        <input
+          type="text"
+          value="<%= message.username %>"
+          disabled
+          style="
+            padding: 6px;
+            width: 300px;
+            background: #334155;
+            color: #cbd5e1;
+            border: none;
+          "
+        />
+      </div>
+      <br />
+      <div>
+        <label for="messageText">Message Text:</label><br />
+        <textarea
+          id="messageText"
+          name="messageText"
+          rows="4"
+          required
+          style="padding: 6px; width: 300px"
+        >
+<%= message.text %></textarea
+        >
+      </div>
+      <br />
+      <button
+        type="submit"
+        style="
+          background: #22c55e;
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          cursor: pointer;
+        "
+      >
+        Update Message
+      </button>
+      <a
+        href="/"
+        style="margin-left: 10px; color: #94a3b8; text-decoration: none"
+        >Cancel</a
+      >
+    </form>
+  </body>
+</html>
