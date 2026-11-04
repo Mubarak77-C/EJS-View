@@ -78,6 +78,23 @@ app.get("/messages/:id", async (req, res) => {
   }
 });
 
+// POST Route: Delete a message by database ID
+app.post("/messages/:id/delete", async (req, res) => {
+  const messageId = parseInt(req.params.id, 10);
+
+  if (isNaN(messageId)) {
+    return res.status(400).send("Invalid ID format.");
+  }
+
+  try {
+    await pool.query("DELETE FROM messages WHERE id = $1", [messageId]);
+    res.redirect("/");
+  } catch (err) {
+    console.error("DATABASE DELETE FAILED:", err);
+    res.status(500).send("Failed to delete message: " + err.message);
+  }
+});
+
 // Server Listener
 const PORT = 3000;
 app.listen(PORT, () => {
