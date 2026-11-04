@@ -49,6 +49,23 @@ app.post("/new", (req, res) => {
   res.redirect("/");
 });
 
+// Dynamic Route: View individual message by index ID
+app.get("/messages/:id", (req, res) => {
+  const messageId = parseInt(req.params.id, 10);
+
+  // Industrial Safety Check: Validate that the ID is a real number and exists in the array
+  if (isNaN(messageId) || messageId < 0 || messageId >= messages.length) {
+    return res.status(404).send("404: Message not found.");
+  }
+
+  const targetMessage = messages[messageId];
+
+  res.render("message", {
+    title: "Message Detail",
+    message: targetMessage,
+  });
+});
+
 // Server Listener
 const PORT = 3000;
 app.listen(PORT, () => {
