@@ -50,6 +50,7 @@ app.post("/new", async (req, res) => {
 });
 
 // Dynamic Route: View individual message by database ID
+// Dynamic Route: View individual message by database ID
 app.get("/messages/:id", async (req, res) => {
   const messageId = parseInt(req.params.id, 10);
 
@@ -58,6 +59,7 @@ app.get("/messages/:id", async (req, res) => {
   }
 
   try {
+    // Looks up the exact row where the database id matches the URL parameter
     const { rows } = await pool.query("SELECT * FROM messages WHERE id = $1", [
       messageId,
     ]);

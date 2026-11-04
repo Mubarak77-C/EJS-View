@@ -18,8 +18,10 @@
             <p><%= msg.text %></p>
             <small style="color: #94a3b8;"><%= msg.added.toLocaleString() %></small>
             <br><br>
-            <!-- Dynamic Link using the array index -->
-            <a href="/messages/<%= index %>" style="color: #38bdf8;">Open Message Detail</a>
+            <!-- Dynamic Link using the array index
+            <a href="/messages/<%= index %>" style="color: #38bdf8;">Open Message Detail</a> -->
+            <!-- Updated from index to msg.id -->
+            <a href="/messages/<%= msg.id %>" style="color: #38bdf8;">Open Message Detail</a>
         </div>
     <% }) %>
 </div>
