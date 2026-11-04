@@ -14,7 +14,7 @@
 <div class="messages-container">
     <% messages.forEach((msg, index) => { %>
         <div class="message-card" style="border: 1px solid #334155; padding: 1rem; margin: 1rem 0; border-radius: 6px;">
-            <p><strong><%= msg.user %></strong> says:</p>
+            <p><strong><%= msg.username %></strong> says:</p>
             <p><%= msg.text %></p>
             <small style="color: #94a3b8;"><%= msg.added.toLocaleString() %></small>
             <br><br>
