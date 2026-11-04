@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title><%= title %></title>
-    <!-- Link your static CSS -->
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <!-- Navigation Render -->
-    <nav>
-      <ul>
-        <% links.forEach((link) => { %>
-          <li><a href="<%= link.href %>"><%= link.text %></a></li>
+    <h1><%= title %></h1>
+    
+    <a href="/new">Write a new message</a>
+
+    <div class="messages-container">
+        <% messages.forEach((msg) => { %>
+            <div class="message-card" style="border: 1px solid #334155; padding: 1rem; margin: 1rem 0; border-radius: 6px;">
+                <p><strong><%= msg.user %></strong> says:</p>
+                <p><%= msg.text %></p>
+                <small style="color: #94a3b8;"><%= msg.added.toLocaleString() %></small>
+            </div>
         <% }) %>
-      </ul>
-    </nav>
+    </div>
 
-    <h1><%= message %></h1>
-    <p>This HTML was dynamically generated on the server using EJS.</p>
-
-    <!-- Include the Reusable Footer -->
     <%- include('partials/footer') %>
 </body>
 </html>

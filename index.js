@@ -2,35 +2,55 @@ const express = require("express");
 const path = require("node:path");
 const app = express();
 
-// Set EJS as template engine
+// 1. View Engine Setup
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// --- CRITICAL STEP: Serve Static Assets ---
+// 2. CRITICAL: Middleware to parse URL-encoded form bodies (req.body)
+app.use(express.urlencoded({ extended: true }));
+
+// 3. Serve Static Assets
 app.use(express.static(path.join(__dirname, "public")));
 
-const links = [
-  { href: "/", text: "Home" },
-  { href: "/about", text: "About" },
+// 4. In-Memory Message Database (State)
+const messages = [
+  {
+    text: "Hi there!",
+    user: "Amigo",
+    added: new Date(),
+  },
+  {
+    text: "Hello World!",
+    user: "Charles",
+    added: new Date(),
+  },
 ];
 
+// --- ROUTES ---
+
+// Home Route: Display messages
 app.get("/", (req, res) => {
-  res.render("index", {
-    title: "Home Page",
-    message: "Welcome to my dynamic Node & EJS app!",
-    links: links,
-  });
+  res.render("index", { title: "Mini Message Board", messages: messages });
 });
 
-app.get("/about", (req, res) => {
-  res.render("about", {
-    title: "About Us",
-    message: "This app is built using Node.js, Express, and EJS templates.",
-    links: links,
-  });
+// Form Route: Render the input form
+app.get("/new", (req, res) => {
+  res.render("form", { title: "New Message" });
 });
 
+// POST Route: Capture form input, push to array, redirect
+app.post("/new", (req, res) => {
+  const messageText = req.body.messageText;
+  const messageUser = req.body.messageUser;
+
+  messages.push({ text: messageText, user: messageUser, added: new Date() });
+
+  // Industrial standard: Redirect back to home so users don't resubmit on page refresh
+  res.redirect("/");
+});
+
+// Server Listener
 const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Mini Message Board live on http://localhost:${PORT}`);
 });
