@@ -1,10 +1,13 @@
-// db/pool.js
-require("dotenv").config(); // <-- Must be line 1
+require("dotenv").config();
 const { Pool } = require("pg");
+
+if (!process.env.DATABASE_URL) {
+  throw new Error("FATAL ERROR: DATABASE_URL environment variable is missing!");
+}
 
 module.exports = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false, // Required for Supabase SSL certificates on serverless
+    rejectUnauthorized: false,
   },
 });
