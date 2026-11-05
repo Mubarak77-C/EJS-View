@@ -18,4 +18,9 @@ const pool = new Pool({
   },
 });
 
+console.log(
+  "Checking DB URL exists:",
+  process.env.DATABASE_URL ? "YES IT EXISTS" : "NO - IT IS MISSING",
+);
+
 module.exports = pool;
