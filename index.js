@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("node:path");
 const pool = require("./db/pool"); // 1. REQUIRED: Connects your database pool
 const app = express();
+const { body, validationResult } = require("express-validator");
 
 // 1. View Engine Setup
 app.set("view engine", "ejs");
@@ -142,6 +143,39 @@ app.post("/messages/:id/update", async (req, res) => {
     res.status(500).send("Failed to update message: " + err.message);
   }
 });
+
+// Update your POST route with validation rules array
+app.post(
+  "/new",
+  [
+    body("username")
+      .trim()
+      .notEmpty()
+      .withMessage("Username cannot be empty.")
+      .escape(),
+    body("text")
+      .trim()
+      .notEmpty()
+      .withMessage("Message text cannot be empty.")
+      .escape(),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      // If validation fails, re-render form with error feedback
+      return res.status(400).render("form", { errors: errors.array() });
+    }
+
+    // Proceed with database insert if validation passes
+    const { username, text } = req.body;
+    await pool.query("INSERT INTO messages (username, text) VALUES ($1, $2)", [
+      username,
+      text,
+    ]);
+    res.redirect("/");
+  },
+);
 
 // // local Server Listener
 // const PORT = 3000;

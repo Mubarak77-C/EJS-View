@@ -29,6 +29,14 @@
       <button type="submit">Submit Message</button>
     </form>
 
+    <% if (typeof errors !== 'undefined') { %>
+  <ul style="color: red;">
+    <% errors.forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
     <p><a href="/">Back to Home</a></p>
   </body>
 </html>
