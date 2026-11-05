@@ -1,6 +1,5 @@
 const { Pool } = require("pg");
 
-// Only load dotenv locally if not running on Vercel production
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
@@ -14,13 +13,8 @@ if (!process.env.DATABASE_URL) {
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false,
+    rejectUnauthorized: false, // Required for cloud-hosted databases like Supabase on Vercel
   },
 });
-
-console.log(
-  "Checking DB URL exists:",
-  process.env.DATABASE_URL ? "YES IT EXISTS" : "NO - IT IS MISSING",
-);
 
 module.exports = pool;
