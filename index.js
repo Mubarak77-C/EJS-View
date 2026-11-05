@@ -143,8 +143,21 @@ app.post("/messages/:id/update", async (req, res) => {
   }
 });
 
-// Server Listener
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Mini Message Board live on http://localhost:${PORT}`);
-});
+// // local Server Listener
+// const PORT = 3000;
+// app.listen(PORT, () => {
+//   console.log(`Mini Message Board live on http://localhost:${PORT}`);
+// });
+
+// ... your express setup, middleware, and routes are up here ...
+
+// Conditionally listen locally, but export for Vercel serverless function
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server running locally on port ${PORT}`);
+  });
+}
+
+// Export the Express app for Vercel
+module.exports = app;
