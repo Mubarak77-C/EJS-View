@@ -1,13 +1,21 @@
-require("dotenv").config();
 const { Pool } = require("pg");
 
-if (!process.env.DATABASE_URL) {
-  throw new Error("FATAL ERROR: DATABASE_URL environment variable is missing!");
+// Only load dotenv locally if not running on Vercel production
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
 }
 
-module.exports = new Pool({
+if (!process.env.DATABASE_URL) {
+  throw new Error(
+    "CRITICAL: DATABASE_URL is not set in the environment variables!",
+  );
+}
+
+const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false,
   },
 });
+
+module.exports = pool;
